@@ -1,0 +1,17 @@
+<div class="container">
+  <form [formGroup]="form">
+    <div class="NgxEditor__Wrapper">
+        <button (click)="applyCommands()">Inserisci Immagine</button>
+      <div *ngIf="showModal" class="modal">
+        <div class="modal-content">
+          <span (click)="closeModal()" class="close">&times;</span>
+          <input type="file" (change)="onFileSelected($event)">
+          <button (click)="insertImage()">Inserisci Immagine</button>
+        </div>
+      </div>
+
+      <ngx-editor-menu [editor]="editor" [toolbar]="toolbar"> </ngx-editor-menu>
+      <ngx-editor [editor]="editor" formControlName="editorContent"> </ngx-editor>
+    </div>
+  </form>
+</div>

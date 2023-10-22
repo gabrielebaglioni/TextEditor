@@ -25,8 +25,8 @@ export class CustomMenuComponent{
     else {
       const dialogRef = this.dialog.open(ImagedialogComponent, {
         data: { editor: this.editor },
-        disableClose: false,  // permette la chiusura del dialog cliccando fuori
-        position: { bottom: '36%', left: '33%' },  // o altre percentuali per centrarlo correttamente
+        disableClose: false,
+        position: { bottom: '36%', left: '33%' },
         width: '400px',
       });
       dialogRef.afterClosed().subscribe((result) => {

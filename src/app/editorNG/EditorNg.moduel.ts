@@ -10,6 +10,7 @@ import {MatIconModule} from "@angular/material/icon";
 import {MatButtonModule} from "@angular/material/button";
 import {ImagedialogComponent} from "./custom-menu/image-dialog/imagedialog.component";
 import {MatDialogModule} from "@angular/material/dialog";
+import {HttpClient, HttpClientModule} from "@angular/common/http";
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import {MatDialogModule} from "@angular/material/dialog";
     MatInputModule,
     ReactiveFormsModule,
     MatDialogModule,
+    HttpClientModule,
 
 
     NgxEditorModule.forRoot({

@@ -2,6 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Editor, toDoc, toHTML, Toolbar, Validators} from "ngx-editor";
 import {FormControl, FormGroup} from "@angular/forms";
 import customSchema from "./custom.shema";
+import {DocumentService} from "./DocumentService";
 
 @Component({
   selector: 'app-editorNG',
@@ -25,8 +26,10 @@ export class EditorNGComponent implements OnInit, OnDestroy {
   form = new FormGroup({
     editorContent: new FormControl('', Validators.required()),
   });
+  constructor(private documentService: DocumentService) {}
 
   ngOnInit(): void {
+
     this.editor = new Editor({
       content: '',
       history: true,
@@ -38,35 +41,30 @@ export class EditorNGComponent implements OnInit, OnDestroy {
       attributes: {},
       linkValidationPattern: ''
     });
+    this.loadInitialTemplate();
   }
+
+
   saveContent(): void {
-    this.htmlContent = this.editor.view.state.doc
+    this.htmlContent = this.editor.view.state.doc;
     console.log(this.htmlContent);
-    if(this.htmlContent){
-      localStorage.setItem('savedTemplate', JSON.stringify(this.htmlContent));
+    if (this.htmlContent) {
+      this.documentService.createDocument(this.htmlContent);
     }
   }
 
-
-  /*loadTemplate(): void {
-    const savedTemplate = localStorage.getItem('savedTemplate');
-    if (savedTemplate) {
-      const docJson = JSON.parse(savedTemplate);
-      const html = toHTML(docJson);  // Converti il JSON del documento in HTML
-      this.editor.commands.insertHTML(html).exec();  // Inserisci l'HTML nell'editor
-    }
-  }*/
-
+  loadInitialTemplate(): void {
+    this.documentService.loadInitialDocumentTemplate()
+      .subscribe(template => {
+        this.editor.setContent(template);
+      });
+  }
   loadTemplate(): void {
-    const savedTemplate = localStorage.getItem('savedTemplate');
-    if (savedTemplate) {
-      const docJson = JSON.parse(savedTemplate);
-      this.editor.setContent(docJson);  // Imposta il contenuto dell'editor con il JSON del documento
+    const document = this.documentService.getDocument();
+    if (document) {
+      this.editor.setContent(document);
     }
   }
-
-
-
 
   ngOnDestroy(): void {
     this.editor.destroy();

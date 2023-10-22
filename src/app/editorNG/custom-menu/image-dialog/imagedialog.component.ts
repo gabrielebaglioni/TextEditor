@@ -32,7 +32,6 @@ export class ImagedialogComponent {
     }
   }
 
-// Funzione per inserire l'immagine nell'editorNG
   insertImage(): void {
     if (this.selectedImage) {
       this.editor.commands.insertImage(this.selectedImage).exec();

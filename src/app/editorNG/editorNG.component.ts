@@ -1,5 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {Editor, schema, Toolbar, Validators} from "ngx-editor";
+import {Editor, toDoc, toHTML, Toolbar, Validators} from "ngx-editor";
 import {FormControl, FormGroup} from "@angular/forms";
 import customSchema from "./custom.shema";
 
@@ -9,7 +9,7 @@ import customSchema from "./custom.shema";
   styleUrls: ['./editorNG.component.css']
 })
 export class EditorNGComponent implements OnInit, OnDestroy {
-
+  htmlContent: any;
   editor!: Editor;
   toolbar: Toolbar = [
     ['bold', 'italic'],
@@ -39,6 +39,33 @@ export class EditorNGComponent implements OnInit, OnDestroy {
       linkValidationPattern: ''
     });
   }
+  saveContent(): void {
+    this.htmlContent = this.editor.view.state.doc
+    console.log(this.htmlContent);
+    if(this.htmlContent){
+      localStorage.setItem('savedTemplate', JSON.stringify(this.htmlContent));
+    }
+  }
+
+
+  /*loadTemplate(): void {
+    const savedTemplate = localStorage.getItem('savedTemplate');
+    if (savedTemplate) {
+      const docJson = JSON.parse(savedTemplate);
+      const html = toHTML(docJson);  // Converti il JSON del documento in HTML
+      this.editor.commands.insertHTML(html).exec();  // Inserisci l'HTML nell'editor
+    }
+  }*/
+
+  loadTemplate(): void {
+    const savedTemplate = localStorage.getItem('savedTemplate');
+    if (savedTemplate) {
+      const docJson = JSON.parse(savedTemplate);
+      this.editor.setContent(docJson);  // Imposta il contenuto dell'editor con il JSON del documento
+    }
+  }
+
+
 
 
   ngOnDestroy(): void {

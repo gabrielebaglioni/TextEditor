@@ -11,18 +11,29 @@ import {ImagedialogComponent} from "./image-dialog/imagedialog.component";
 })
 export class CustomMenuComponent{
   @Input() editor!: Editor;
-
+  isOpen : boolean = false;
   constructor(
-    @Inject(forwardRef(() => EditorNGComponent)) private editorNGComponent: EditorNGComponent,
+    @Inject(forwardRef(() => EditorNGComponent)) private parent: EditorNGComponent,
     public dialog: MatDialog
   ) {}
 
   applyCommands(): void {
-    const dialogRef = this.dialog.open(ImagedialogComponent, {
-      data: { editor: this.editor }
-    });
+    if(this.isOpen){
+      this.dialog.closeAll();
+      this.isOpen = false;
+    }
+    else {
+      const dialogRef = this.dialog.open(ImagedialogComponent, {
+        data: { editor: this.editor },
+        disableClose: false,  // permette la chiusura del dialog cliccando fuori
+        position: { bottom: '36%', left: '33%' },  // o altre percentuali per centrarlo correttamente
+        width: '400px',
+      });
+      dialogRef.afterClosed().subscribe((result) => {
+        this.isOpen = false;
+      });
+      this.isOpen = true;
+    }
   }
-
-
 
 }
